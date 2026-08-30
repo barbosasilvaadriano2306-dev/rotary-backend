@@ -12,6 +12,20 @@ model User {
   nome      String
   email     String   @unique
   senha     String
-  cargo     String   @default("CONVIDADO")
+  cargo     String   @default("ROTARIANO")
   createdAt DateTime @default(now())
+}
+
+model Evento {
+  id        String   @id @default(uuid())
+  titulo    String
+  data      String
+  local     String
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  titulo    String
+  conteudo  String
+  data      DateTime @default(now())
 }
