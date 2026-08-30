@@ -2,25 +2,21 @@ FROM node:18
 
 WORKDIR /app
 
-# 1. Copia apenas os arquivos de dependências primeiro
+# Copia as configurações
 COPY package*.json ./
 
-# 2. Instala os programas necessários
+# Instala tudo
 RUN npm install
 
-# 3. Copia TODO o resto dos arquivos do projeto de uma vez
-# Isso evita o erro de "pasta não encontrada"
+# Copia o resto (incluindo a pasta prisma que você criou no passo 1)
 COPY . .
 
-# 4. Gera o motor do Banco de Dados
-# O Prisma vai procurar o arquivo schema.prisma sozinho agora
-RUN npx prisma generate
+# Gera o banco apontando para o arquivo certo
+RUN npx prisma generate --schema=./prisma/schema.prisma
 
-# 5. Constrói o sistema NestJS
+# Faz o build
 RUN npm run build
 
-# 6. Avisa ao Railway a porta de comunicação
 EXPOSE 3000
 
-# 7. Comando para ligar o servidor
 CMD ["npm", "run", "start:prod"]
