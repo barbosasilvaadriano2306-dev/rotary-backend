@@ -39,3 +39,16 @@ export class AppController {
       orderBy: { createdAt: 'desc' } 
     });
   }
+
+@Post('auth/login')
+  async login(@Body() data: any) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: data.email },
+    });
+
+    if (user && user.senha === data.senha) {
+      return user; // Sucesso: devolve o usuário
+    } else {
+      throw new Error('E-mail ou senha incorretos');
+    }
+  }
