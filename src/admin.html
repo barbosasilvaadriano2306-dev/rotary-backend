@@ -1,0 +1,52 @@
+@Get('admin')
+  getAdmin() {
+    return `
+      <html>
+        <body style="font-family: sans-serif; padding: 20px;">
+          <h1 style="color: #005DAA">Painel de Controle - Rotary Guarulhos</h1>
+          
+          <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+            <h3>Postar Nova Notícia</h3>
+            <input id="titulo" placeholder="Título"><br><br>
+            <textarea id="conteudo" placeholder="Conteúdo"></textarea><br><br>
+            <button onclick="postar()">Publicar no Mural</button>
+          </div>
+
+          <div style="border: 1px solid #ccc; padding: 15px;">
+            <h3>Criar Novo Evento</h3>
+            <input id="e_titulo" placeholder="Nome do Evento"><br><br>
+            <input id="e_data" placeholder="Data (ex: 15/Out 20h)"><br><br>
+            <input id="e_local" placeholder="Local"><br><br>
+            <button onclick="criarEvento()">Agendar Evento</button>
+          </div>
+
+          <script>
+            async function postar() {
+              await fetch('/posts', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                  titulo: document.getElementById('titulo').value,
+                  conteudo: document.getElementById('conteudo').value
+                })
+              });
+              alert('Notícia publicada!');
+            }
+
+            async function criarEvento() {
+              await fetch('/events', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                  titulo: document.getElementById('e_titulo').value,
+                  data: document.getElementById('e_data').value,
+                  local: document.getElementById('e_local').value
+                })
+              });
+              alert('Evento criado!');
+            }
+          </script>
+        </body>
+      </html>
+    `;
+  }
