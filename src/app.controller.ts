@@ -35,6 +35,7 @@ export class AppController {
 
   @Get('posts')
   async getPosts() {
-    return this.prisma.post.findMany({ orderBy: { createdAt: 'desc' } });
+    return this.prisma.post.findMany({ 
+      orderBy: { createdAt: 'desc' } 
+    });
   }
-}
