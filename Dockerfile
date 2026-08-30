@@ -1,23 +1,22 @@
 FROM node:18
 
+# Define a pasta de trabalho
 WORKDIR /app
 
-# Copia os arquivos de configuração primeiro
-COPY package.json ./
-COPY tsconfig.json ./
-COPY nest-cli.json ./
+# Copia TODOS os arquivos do GitHub para dentro do servidor de uma vez
+COPY . .
 
 # Instala as dependências
 RUN npm install
 
-# Copia a pasta prisma e src (garantindo que existam)
-COPY prisma ./prisma/
-COPY src ./src/
-
-# Gera o motor do banco e faz o build
+# Gera o cliente do banco de dados
 RUN npx prisma generate
+
+# Constrói o sistema (O passo que estava dando erro)
 RUN npm run build
 
+# Porta de comunicação
 EXPOSE 3000
 
+# Comando para ligar
 CMD ["npm", "run", "start:prod"]
