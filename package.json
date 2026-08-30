@@ -1,11 +1,11 @@
 {
   "name": "rotary-backend",
   "version": "1.0.0",
-  "main": "dist/main.js",
+  "main": "dist/src/main.js",
   "scripts": {
-    "build": "nest build",
-    "start": "nest start",
-    "start:prod": "node dist/main"
+    "build": "tsc",
+    "start": "node dist/src/main.js",
+    "start:prod": "node dist/src/main.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
     "prisma": "^5.0.0",
-    "typescript": "^5.1.0"
+    "typescript": "^5.1.0",
+    "@types/node": "^20.0.0"
   }
 }
