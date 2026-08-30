@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npx prisma generate
-RUN npm run build
+RUN npx tsc
 EXPOSE 3000
-# Sincroniza o banco e inicia o arquivo principal na pasta dist
-CMD npx prisma db push && node dist/src/main.js
+# Comando direto e simples
+CMD npx prisma db push && node dist/main.js
