@@ -5,45 +5,36 @@ import { PrismaService } from './prisma.service';
 export class AppController {
   constructor(private prisma: PrismaService) {}
 
-  // 1. Rota de Cadastro (O que já tínhamos)
+  // --- MEMBROS ---
   @Post('auth/register')
   async register(@Body() data: any) {
-    return this.prisma.user.create({
-      data: {
-        nome: data.nome,
-        email: data.email,
-        senha: data.senha,
-        cargo: data.cargo || 'ROTARIANO',
-      },
-    });
+    return this.prisma.user.create({ data });
   }
 
-  // 2. Rota de Membros (O que estava faltando!)
   @Get('members')
   async getMembers() {
-    // Busca todos os usuários do banco de dados (O Elefante Azul)
-    return this.prisma.user.findMany({
-      orderBy: { nome: 'asc' }, // Organiza por ordem alfabética
-    });
+    return this.prisma.user.findMany({ orderBy: { nome: 'asc' } });
   }
 
-  // 3. Rota de Eventos/Agenda
+  // --- EVENTOS (Agora salvando no banco!) ---
+  @Post('events')
+  async createEvent(@Body() data: any) {
+    return this.prisma.evento.create({ data });
+  }
+
   @Get('events')
   async getEvents() {
-    // Por enquanto, enviamos uma lista fixa para o MVP
-    return [
-      { 
-        id: '1', 
-        titulo: 'Reunião Ordinária', 
-        data: 'Próxima Terça, 20:00', 
-        local: 'Hotel Marriott Guarulhos' 
-      },
-      { 
-        id: '2', 
-        titulo: 'Ação Social: Entrega de Alimentos', 
-        data: 'Sábado, 09:00', 
-        local: 'Bairro Pimentas' 
-      }
-    ];
+    return this.prisma.evento.findMany({ orderBy: { data: 'asc' } });
+  }
+
+  // --- MURAL DE NOTÍCIAS (Posts) ---
+  @Post('posts')
+  async createPost(@Body() data: any) {
+    return this.prisma.post.create({ data });
+  }
+
+  @Get('posts')
+  async getPosts() {
+    return this.prisma.post.findMany({ orderBy: { createdAt: 'desc' } });
   }
 }
