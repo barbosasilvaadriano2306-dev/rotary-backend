@@ -2,19 +2,20 @@ FROM node:18
 
 WORKDIR /app
 
-# Copia as configurações
-COPY package*.json ./
+# Copia os arquivos de configuração primeiro
+COPY package.json ./
+COPY tsconfig.json ./
+COPY nest-cli.json ./
 
-# Instala tudo
+# Instala as dependências
 RUN npm install
 
-# Copia o resto (incluindo a pasta prisma que você criou no passo 1)
-COPY . .
+# Copia a pasta prisma e src (garantindo que existam)
+COPY prisma ./prisma/
+COPY src ./src/
 
-# Gera o banco apontando para o arquivo certo
-RUN npx prisma generate --schema=./prisma/schema.prisma
-
-# Faz o build
+# Gera o motor do banco e faz o build
+RUN npx prisma generate
 RUN npm run build
 
 EXPOSE 3000
