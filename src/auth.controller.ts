@@ -1,21 +1,26 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Get, Body } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 
-@Controller('auth')
-export class AuthController {
+@Controller()
+export class AppController {
   constructor(private prisma: PrismaService) {}
 
-  @Post('register')
+  @Post('auth/register')
   async register(@Body() data: any) {
-    // Salva o membro no banco de dados que você criou no Railway
-    const user = await this.prisma.user.create({
-      data: {
-        nome: data.nome,
-        email: data.email,
-        senha: data.senha, // Em produção usaríamos criptografia
-        cargo: data.cargo,
-      },
-    });
-    return { message: "Membro cadastrado com sucesso!", id: user.id };
+    return this.prisma.user.create({ data });
+  }
+
+  @Get('members')
+  async getMembers() {
+    return this.prisma.user.findMany();
+  }
+
+  @Get('events')
+  async getEvents() {
+    // Retorna alguns eventos fixos para o MVP
+    return [
+      { id: '1', titulo: 'Reunião Ordinária', data: 'Terça, 20:00', local: 'Hotel Marriott' },
+      { id: '2', titulo: 'Ação Social Pimentas', data: 'Sábado, 09:00', local: 'Comunidade Pimentas' }
+    ];
   }
 }
